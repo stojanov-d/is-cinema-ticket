@@ -32,12 +32,6 @@ namespace IS_Domasna.Controllers
             return View();
         }
 
-        public async Task<IActionResult> AllUsers()
-        {
-            var allUsers = await _userManager.Users.ToListAsync();
-            return View(allUsers);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
