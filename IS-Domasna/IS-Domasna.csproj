@@ -15,4 +15,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\IS-Domasna.Domain\IS-Domasna.Domain.csproj" />
+    <ProjectReference Include="..\IS-Domasna.Repository\IS-Domasna.Repository.csproj" />
+    <ProjectReference Include="..\IS-Domasna.Services\IS-Domasna.Services.csproj" />
+  </ItemGroup>
+
 </Project>

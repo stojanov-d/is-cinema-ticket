@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace IS_Domasna.Models
+namespace IS_Domasna.Domain
 {
     public class ErrorViewModel
     {

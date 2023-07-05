@@ -1,4 +1,4 @@
-﻿using IS_Domasna.Models;
+﻿using IS_Domasna.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
