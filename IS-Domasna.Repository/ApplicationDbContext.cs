@@ -1,5 +1,5 @@
 ﻿using IS_Domasna.Domain.DomainModels;
-
+using IS_Domasna.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace IS_Domasna.Repository
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public virtual DbSet<Ticket> Tickets { get; set; }
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
@@ -24,7 +24,7 @@ namespace IS_Domasna.Repository
         {
 
             base.OnModelCreating(builder);
-            /*builder.Entity<Ticket>()
+            builder.Entity<Ticket>()
                 .Property(z => z.Id)
                 .ValueGeneratedOnAdd();
 
@@ -44,14 +44,14 @@ namespace IS_Domasna.Repository
             builder.Entity<TicketsInShoppingCart>()
                 .HasOne(z => z.ShoppingCart)
                 .WithMany(z => z.TicketsInShoppingCarts)
-                .HasForeignKey(z => z.ShoppingCartId);*/
+                .HasForeignKey(z => z.ShoppingCartId);
 
-           /* builder.Entity<ShoppingCart>()
-                .HasOne<IdentityUser>(z => z.Own)
+            builder.Entity<ShoppingCart>()
+                .HasOne<ApplicationUser>(z => z.Owner)
                 .WithOne(z => z.UserCart)
                 .HasForeignKey<ShoppingCart>(z => z.OwnerId);
 
-            builder.Entity<ProductInOrder>()
+            /*builder.Entity<ProductInOrder>()
                 .Property(z => z.Id)
                 .ValueGeneratedOnAdd();
 
