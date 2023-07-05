@@ -1,5 +1,5 @@
 ﻿using System;
-using IS_Domasna.Data;
+using IS_Domasna.Repository;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;

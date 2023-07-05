@@ -19,9 +19,7 @@ namespace IS_Domasna.Domain.DomainModels
         [Display(Name = "Date and time")]
         [Required]
         public DateTime MovieAirTime { get; set; }
-
-        public string UserId { get; set; }
-
-        public IdentityUser TicketUser { get; set; }
+        
+        public ICollection<TicketsInShoppingCart> TicketsInShoppingCarts { get; set; }
     }
 }

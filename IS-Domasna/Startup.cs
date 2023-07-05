@@ -1,4 +1,5 @@
 using IS_Domasna.Data;
+using IS_Domasna.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
