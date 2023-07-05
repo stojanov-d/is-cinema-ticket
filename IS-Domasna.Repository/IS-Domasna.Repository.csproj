@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IS-Domasna.Domain\IS-Domasna.Domain.csproj" />
-    <ProjectReference Include="..\IS-Domasna.Services\IS-Domasna.Services.csproj" />
   </ItemGroup>
 
 </Project>
