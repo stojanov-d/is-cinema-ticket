@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace IS_Domasna.Data.Migrations
+namespace IS_Domasna.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230705204649_BigOne")]
-    partial class BigOne
+    [Migration("20230706135047_orders")]
+    partial class orders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,22 @@ namespace IS_Domasna.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.32")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("IS_Domasna.Domain.DomainModels.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
+                });
 
             modelBuilder.Entity("IS_Domasna.Domain.DomainModels.ShoppingCart", b =>
                 {
@@ -62,6 +78,30 @@ namespace IS_Domasna.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tickets");
+                });
+
+            modelBuilder.Entity("IS_Domasna.Domain.DomainModels.TicketInOrder", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("TicketId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketInOrder");
                 });
 
             modelBuilder.Entity("IS_Domasna.Domain.DomainModels.TicketsInShoppingCart", b =>
@@ -294,11 +334,33 @@ namespace IS_Domasna.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("IS_Domasna.Domain.DomainModels.Order", b =>
+                {
+                    b.HasOne("IS_Domasna.Domain.Identity.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("IS_Domasna.Domain.DomainModels.ShoppingCart", b =>
                 {
                     b.HasOne("IS_Domasna.Domain.Identity.ApplicationUser", "Owner")
                         .WithOne("UserCart")
                         .HasForeignKey("IS_Domasna.Domain.DomainModels.ShoppingCart", "OwnerId");
+                });
+
+            modelBuilder.Entity("IS_Domasna.Domain.DomainModels.TicketInOrder", b =>
+                {
+                    b.HasOne("IS_Domasna.Domain.DomainModels.Order", "Order")
+                        .WithMany("TicketInOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("IS_Domasna.Domain.DomainModels.Ticket", "Ticket")
+                        .WithMany("TicketInOrders")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("IS_Domasna.Domain.DomainModels.TicketsInShoppingCart", b =>

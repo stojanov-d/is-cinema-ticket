@@ -21,4 +21,8 @@
     <ProjectReference Include="..\IS-Domasna.Services\IS-Domasna.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

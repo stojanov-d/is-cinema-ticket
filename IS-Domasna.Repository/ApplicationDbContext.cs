@@ -51,19 +51,19 @@ namespace IS_Domasna.Repository
                 .WithOne(z => z.UserCart)
                 .HasForeignKey<ShoppingCart>(z => z.OwnerId);
 
-            /*builder.Entity<ProductInOrder>()
+            builder.Entity<TicketInOrder>()
                 .Property(z => z.Id)
                 .ValueGeneratedOnAdd();
 
-            builder.Entity<ProductInOrder>()
-                .HasOne(z => z.Product)
-                .WithMany(z => z.ProductInOrders)
-                .HasForeignKey(z => z.ProductId);
+            builder.Entity<TicketInOrder>()
+                .HasOne(z => z.Ticket)
+                .WithMany(z => z.TicketInOrders)
+                .HasForeignKey(z => z.TicketId);
 
-            builder.Entity<ProductInOrder>()
+            builder.Entity<TicketInOrder>()
                 .HasOne(z => z.Order)
-                .WithMany(z => z.ProductInOrders)
-                .HasForeignKey(z => z.OrderId);*/
+                .WithMany(z => z.TicketInOrders)
+                .HasForeignKey(z => z.OrderId);
         }
     }
 

@@ -21,5 +21,6 @@ namespace IS_Domasna.Domain.DomainModels
         public DateTime MovieAirTime { get; set; }
         
         public ICollection<TicketsInShoppingCart> TicketsInShoppingCarts { get; set; }
+        public virtual ICollection<TicketInOrder> TicketInOrders { get; set; }
     }
 }
