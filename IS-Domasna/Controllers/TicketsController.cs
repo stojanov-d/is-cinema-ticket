@@ -7,34 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IS_Domasna.Domain.DomainModels;
 using IS_Domasna.Repository;
+using IS_Domasna.Services.Interface;
 
 namespace IS_Domasna.Controllers
 {
     public class TicketsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly ITicketService ticketService;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(ITicketService ticketService)
         {
-            _context = context;
+            this.ticketService = ticketService;
         }
 
         // GET: Tickets
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Tickets.ToListAsync());
+            return View(ticketService.GetAllTickets());
         }
 
         // GET: Tickets/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public IActionResult Details(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = ticketService.GetDetailsForTicket(id.Value);
             if (ticket == null)
             {
                 return NotFound();
@@ -54,27 +54,26 @@ namespace IS_Domasna.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id")] Ticket ticket)
+        public IActionResult Create([Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
                 ticket.Id = Guid.NewGuid();
-                _context.Add(ticket);
-                await _context.SaveChangesAsync();
+                ticketService.CreateNewTicket(ticket);
                 return RedirectToAction(nameof(Index));
             }
             return View(ticket);
         }
 
         // GET: Tickets/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public IActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = ticketService.GetDetailsForTicket(id.Value);
             if (ticket == null)
             {
                 return NotFound();
@@ -87,7 +86,7 @@ namespace IS_Domasna.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id")] Ticket ticket)
+        public IActionResult Edit(Guid id, [Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id")] Ticket ticket)
         {
             if (id != ticket.Id)
             {
@@ -98,8 +97,7 @@ namespace IS_Domasna.Controllers
             {
                 try
                 {
-                    _context.Update(ticket);
-                    await _context.SaveChangesAsync();
+                    ticketService.UpdateTicket(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,15 +116,14 @@ namespace IS_Domasna.Controllers
         }
 
         // GET: Tickets/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var ticket = await _context.Tickets
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var ticket = ticketService.GetDetailsForTicket(id.Value);
             if (ticket == null)
             {
                 return NotFound();
@@ -138,17 +135,15 @@ namespace IS_Domasna.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public IActionResult DeleteConfirmed(Guid? id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            ticketService.DeleteTicket(id.Value);
             return RedirectToAction(nameof(Index));
         }
 
         private bool TicketExists(Guid id)
         {
-            return _context.Tickets.Any(e => e.Id == id);
+            return ticketService.GetDetailsForTicket(id) != null;
         }
     }
 }

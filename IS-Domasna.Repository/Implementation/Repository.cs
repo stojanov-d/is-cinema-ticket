@@ -23,7 +23,7 @@ namespace IS_Domasna.Repository.Implementation
         public void Delete(T entity)
         {
 
-            if (entity != null)
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
@@ -46,7 +46,7 @@ namespace IS_Domasna.Repository.Implementation
 
         public void Insert(T entity)
         {
-            if (entity != null)
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
@@ -57,7 +57,7 @@ namespace IS_Domasna.Repository.Implementation
 
         public void Update(T entity)
         {
-            if (entity != null)
+            if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }

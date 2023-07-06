@@ -1,6 +1,10 @@
 using IS_Domasna.Data;
 using IS_Domasna.Domain.Identity;
 using IS_Domasna.Repository;
+using IS_Domasna.Repository.Implementation;
+using IS_Domasna.Repository.Interface;
+using IS_Domasna.Services.Implementation;
+using IS_Domasna.Services.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +39,11 @@ namespace IS_Domasna
             services.AddDefaultIdentity<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<ITicketService,TicketService>();
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
