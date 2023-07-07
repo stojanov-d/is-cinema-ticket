@@ -9,45 +9,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MovieAirTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieImage)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieAirTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+    <div class="card" style="width: 18rem;">
+        <img src="@item.MovieImage" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">@item.MovieTitle</h5>
+            <p class="card-text">@item.MovieDescription</p>
+            <p class="card-text">$@item.Price</p>
+            @if (User.IsInRole("Admin"))
+            {
+                <a asp-action="Edit" class="btn btn-outline-secondary" asp-route-id="@item.Id">Edit</a>
+                <form method="post" asp-action="Delete" class="d-inline-block" asp-route-id="@item.Id">
+                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                </form>
+            }
+            <div>
+                <a asp-controller="Tickets" asp-action="AddTicketToCart" asp-route-id="@item.Id" class="btn btn-info">Add to cart</a>
+            </div>
+        </div>
+    </div>
+	
+
 }
-    </tbody>
-</table>

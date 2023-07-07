@@ -13,14 +13,57 @@ namespace IS_Domasna.Services.Implementation
     {
 
         public readonly IRepository<Ticket> _ticketRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IRepository<TicketsInShoppingCart> ticketInShoppingCartRepository;
 
-        public TicketService(IRepository<Ticket> ticketRepository)
+        public TicketService(IRepository<Ticket> ticketRepository, IUserRepository _userRepository , IRepository<TicketsInShoppingCart> ticketInShoppingCartRepository)
         {
             _ticketRepository = ticketRepository;
+            this._userRepository = _userRepository;
+            this.ticketInShoppingCartRepository = ticketInShoppingCartRepository;
         }
-        public bool AddToShoppingCart(ShoppingCartDto item, string UserId)
+        public bool AddToShoppingCart(AddToShoppingCardDto item, string UserId)
         {
-            throw new NotImplementedException();
+            var user = this._userRepository.GetById(UserId);
+
+            var userShoppingCard = user.UserCart;
+
+            var selectedTicket = _ticketRepository.Get(item.SelectedTicketId);
+
+            if (selectedTicket != null && userShoppingCard != null)
+            {
+                var product = this.GetDetailsForTicket(item.SelectedTicketId);
+                //{896c1325-a1bb-4595-92d8-08da077402fc}
+
+                if (product != null)
+                {
+                    TicketsInShoppingCart itemToAdd = new TicketsInShoppingCart
+                    {
+                        Id = Guid.NewGuid(),
+                        Ticket = product,
+                        TicketId = product.Id,
+                        ShoppingCart = userShoppingCard,
+                        ShoppingCartId = userShoppingCard.Id,
+                        Quantity = item.Quantity
+                    };
+
+                    var existing = userShoppingCard.TicketsInShoppingCarts.Where(z => z.ShoppingCartId == userShoppingCard.Id && z.TicketId == itemToAdd.TicketId).FirstOrDefault();
+
+                    if (existing != null)
+                    {
+                        existing.Quantity += itemToAdd.Quantity;
+                        this.ticketInShoppingCartRepository.Update(existing);
+
+                    }
+                    else
+                    {
+                        this.ticketInShoppingCartRepository.Insert(itemToAdd);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            return false;
         }
 
         public void CreateNewTicket(Ticket ticket)
@@ -44,9 +87,17 @@ namespace IS_Domasna.Services.Implementation
             return this._ticketRepository.Get(id);
         }
 
-        public ShoppingCartDto GetShoppingCartInfo(Guid id)
+        public AddToShoppingCardDto GetShoppingCartInfo(Guid id)
         {
-            throw new NotImplementedException();
+            var product = this.GetDetailsForTicket(id);
+            AddToShoppingCardDto model = new AddToShoppingCardDto
+            {
+                SelectedTicket = product,
+                SelectedTicketId = product.Id,
+                Quantity = 1
+            };
+
+            return model;
         }
 
         public void UpdateTicket(Ticket ticket)

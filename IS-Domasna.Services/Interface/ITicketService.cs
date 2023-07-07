@@ -13,7 +13,7 @@ namespace IS_Domasna.Services.Interface
         void CreateNewTicket(Ticket ticket);
         void DeleteTicket(Guid id);
         void UpdateTicket(Ticket ticket);
-        ShoppingCartDto GetShoppingCartInfo(Guid id);
-        bool AddToShoppingCart(ShoppingCartDto item, string UserId);
+        AddToShoppingCardDto GetShoppingCartInfo(Guid id);
+        bool AddToShoppingCart(AddToShoppingCardDto item, string UserId);
     }
 }

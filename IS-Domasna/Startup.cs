@@ -42,6 +42,10 @@ namespace IS_Domasna
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddTransient<ITicketService,TicketService>();
+            services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
+            services.AddScoped(typeof(IOrderRepository), typeof(OrderRepository));
+            services.AddTransient<IShoppingCartService, ShoppingCartService>();
+            /*services.AddTransient<IOrderService,OrderSer>();*/
 
 
             services.AddControllersWithViews();

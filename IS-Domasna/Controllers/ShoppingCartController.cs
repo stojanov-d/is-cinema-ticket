@@ -2,9 +2,11 @@
 using System.Security.Claims;
 using System;
 using IS_Domasna.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IS_Domasna.Controllers
 {
+    [Authorize]
     public class ShoppingCartController : Controller
     {
 
@@ -31,11 +33,11 @@ namespace IS_Domasna.Controllers
 
             if (result)
             {
-                return RedirectToAction("Index", "ShoppingCard");
+                return RedirectToAction("Index", "ShoppingCart");
             }
             else
             {
-                return RedirectToAction("Index", "ShoppingCard");
+                return RedirectToAction("Index", "ShoppingCart");
             }
         }
 

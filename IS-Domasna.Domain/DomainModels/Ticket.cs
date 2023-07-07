@@ -19,6 +19,7 @@ namespace IS_Domasna.Domain.DomainModels
         [Display(Name = "Date and time")]
         [Required]
         public DateTime MovieAirTime { get; set; }
+        public int Price { get; set; }
         
         public ICollection<TicketsInShoppingCart> TicketsInShoppingCarts { get; set; }
         public virtual ICollection<TicketInOrder> TicketInOrders { get; set; }

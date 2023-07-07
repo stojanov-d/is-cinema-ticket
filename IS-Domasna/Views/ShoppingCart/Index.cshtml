@@ -33,9 +33,9 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Product Name</th>
+                    <th scope="col">Movie</th>
                     <th scope="col">Quantity</th>
-                    <th scope="col">ProductPrice</th>
+                    <th scope="col">Price</th>
                     <th></th>
                 </tr>
             </thead>
@@ -57,7 +57,7 @@
                             <td>@item.Ticket.MovieTitle</td>
                             <td>@item.Quantity</td>
                             @*<td>$@item.Ticket.Price</td>*@
-                            <td><a asp-controller="ShoppingCard" asp-action="DeleteFromShoppingCart" asp-route-id="@item.TicketId" class="btn btn-danger">Delete From ShoppingCart</a></td>
+                            <td><a asp-controller="ShoppingCart" asp-action="DeleteFromShoppingCart" asp-route-id="@item.TicketId" class="btn btn-danger">Delete From ShoppingCart</a></td>
                         </tr>
                     }
                 }

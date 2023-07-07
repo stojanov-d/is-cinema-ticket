@@ -8,16 +8,21 @@ using Microsoft.EntityFrameworkCore;
 using IS_Domasna.Domain.DomainModels;
 using IS_Domasna.Repository;
 using IS_Domasna.Services.Interface;
+using IS_Domasna.Domain.DTO;
+using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace IS_Domasna.Controllers
 {
     public class TicketsController : Controller
     {
         private readonly ITicketService ticketService;
+        private readonly ILogger<TicketsController> _logger;
 
-        public TicketsController(ITicketService ticketService)
+        public TicketsController(ITicketService ticketService, ILogger<TicketsController> _logger)
         {
             this.ticketService = ticketService;
+            this._logger = _logger;
         }
 
         // GET: Tickets
@@ -144,6 +149,32 @@ namespace IS_Domasna.Controllers
         private bool TicketExists(Guid id)
         {
             return ticketService.GetDetailsForTicket(id) != null;
+        }
+
+        public IActionResult AddTicketToCart(Guid id)
+        {
+            var result = this.ticketService.GetShoppingCartInfo(id);
+
+            return View(result);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddTicketToCart(AddToShoppingCardDto model)
+        {
+
+            _logger.LogInformation("User Request -> Add Product in ShoppingCart and save changes in database!");
+
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var result = this.ticketService.AddToShoppingCart(model, userId);
+
+            if (result)
+            {
+                return RedirectToAction("Index", "Tickets");
+            }
+            return View(model);
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿/*using IS_Domasna.Domain.DomainModels;
+﻿using IS_Domasna.Domain.DomainModels;
 using IS_Domasna.Domain.DTO;
 using IS_Domasna.Repository.Interface;
 using IS_Domasna.Services.Interface;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Mail;
 using System.Text;
@@ -57,7 +58,7 @@ namespace IS_Domasna.Services.Implementation
 
                 var allProductPrices = allProducts.Select(z => new
                 {
-                    ProductPrice = z.CurrnetProduct.ProductPrice,
+                    ProductPrice = z.Ticket.Price,
                     Quantity = z.Quantity
                 }).ToList();
 
@@ -70,7 +71,7 @@ namespace IS_Domasna.Services.Implementation
 
                 var reuslt = new ShoppingCartDto
                 {
-                    Products = allProducts,
+                    Tickets = allProducts,
                     TotalPrice = totalPrice
                 };
 
@@ -81,7 +82,7 @@ namespace IS_Domasna.Services.Implementation
 
         public bool order(string userId)
         {
-            if (!string.IsNullOrEmpty(userId))
+            /*if (!string.IsNullOrEmpty(userId))
             {
                 var loggedInUser = this._userRepository.Get(userId);
                 var userCard = loggedInUser.UserCart;
@@ -146,8 +147,8 @@ namespace IS_Domasna.Services.Implementation
                 return true;
             }
 
+            return false;*/
             return false;
         }
     }
 }
-*/
