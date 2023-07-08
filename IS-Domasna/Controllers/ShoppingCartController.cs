@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System;
 using IS_Domasna.Services.Interface;
 using Microsoft.AspNetCore.Authorization;
+using Stripe;
 
 namespace IS_Domasna.Controllers
 {
@@ -50,7 +51,8 @@ namespace IS_Domasna.Controllers
             return result;
         }
 
-        /*public IActionResult PayOrder(string stripeEmail, string stripeToken)
+        
+        public IActionResult PayOrder(string stripeEmail, string stripeToken)
         {
             var customerService = new CustomerService();
             var chargeService = new ChargeService();
@@ -67,7 +69,7 @@ namespace IS_Domasna.Controllers
             var charge = chargeService.Create(new ChargeCreateOptions
             {
                 Amount = (Convert.ToInt32(order.TotalPrice) * 100),
-                Description = "EShop Application Payment",
+                Description = "Cinema Shop Payments",
                 Currency = "usd",
                 Customer = customer.Id
             });
@@ -78,15 +80,15 @@ namespace IS_Domasna.Controllers
 
                 if (result)
                 {
-                    return RedirectToAction("Index", "ShoppingCard");
+                    return RedirectToAction("Index", "ShoppingCart");
                 }
                 else
                 {
-                    return RedirectToAction("Index", "ShoppingCard");
+                    return RedirectToAction("Index", "ShoppingCart");
                 }
             }
 
-            return RedirectToAction("Index", "ShoppingCard");
-        }*/
+            return RedirectToAction("Index", "ShoppingCart");
+        }
     }
 }

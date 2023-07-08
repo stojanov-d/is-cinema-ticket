@@ -1,5 +1,5 @@
 ﻿﻿@using Microsoft.Extensions.Options
-@*@inject IOptions<EShop.Domain.StripeSettings> Stripe*@
+@inject IOptions<IS_Domasna.Domain.StripeSettings> Stripe
 @model IS_Domasna.Domain.DTO.ShoppingCartDto
 
 @{
@@ -10,23 +10,26 @@
 <div class="container">
 
 
-    @*<div class="row m-4">
+    <div class="row m-4">
         @if (Model.TotalPrice != 0)
         {
-            <form asp-controller="ShoppingCard" asp-action="PayOrder" method="post">
+            <form asp-controller="ShoppingCart" asp-action="PayOrder" method="post">
                 <article>
                     <script src="https://checkout.stripe.com/checkout.js"
                             class="stripe-button"
                             data-key="@Stripe.Value.PublishableKey"
                             data-locale="auto"
-                            data-description="EShop Application Payment"
+                            data-description="Cinema Shop Payments"
                             data-amount="@(Model.TotalPrice * 100)"
                             data-label="Pay $@Model.TotalPrice">
                     </script>
                 </article>
             </form>
         }
-    </div>*@
+    </div>
+
+
+
 
     <div class="row m-4">
         <table class="table">

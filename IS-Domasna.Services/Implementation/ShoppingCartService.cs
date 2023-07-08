@@ -17,13 +17,19 @@ namespace IS_Domasna.Services.Implementation
         private readonly IRepository<Order> _orderRepository;
         private readonly IRepository<TicketInOrder> _ticketInOrderRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IRepository<EmailMessage> _mailRepository;
 
-        public ShoppingCartService(IRepository<ShoppingCart> shoppingCartRepository, IUserRepository userRepository, IRepository<Order> orderRepository, IRepository<TicketInOrder> ticketInOrderRepository)
+        public ShoppingCartService(IRepository<ShoppingCart> shoppingCartRepository,
+            IUserRepository userRepository,
+            IRepository<Order> orderRepository,
+            IRepository<TicketInOrder> ticketInOrderRepository,
+            IRepository<EmailMessage> mailRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _userRepository = userRepository;
             _orderRepository = orderRepository;
             _ticketInOrderRepository = ticketInOrderRepository;
+            _mailRepository = mailRepository;
         }
 
 
@@ -82,9 +88,9 @@ namespace IS_Domasna.Services.Implementation
 
         public bool order(string userId)
         {
-            /*if (!string.IsNullOrEmpty(userId))
+            if (!string.IsNullOrEmpty(userId))
             {
-                var loggedInUser = this._userRepository.Get(userId);
+                var loggedInUser = this._userRepository.GetById(userId);
                 var userCard = loggedInUser.UserCart;
 
                 EmailMessage mail = new EmailMessage();
@@ -102,13 +108,13 @@ namespace IS_Domasna.Services.Implementation
 
                 this._orderRepository.Insert(order);
 
-                List<ProductInOrder> productInOrders = new List<ProductInOrder>();
+                List<TicketInOrder> productInOrders = new List<TicketInOrder>();
 
-                var result = userCard.ProductInShoppingCarts.Select(z => new ProductInOrder
+                var result = userCard.TicketsInShoppingCarts.Select(z => new TicketInOrder
                 {
                     Id = Guid.NewGuid(),
-                    ProductId = z.CurrnetProduct.Id,
-                    Product = z.CurrnetProduct,
+                    TicketId = z.TicketId,
+                    Ticket = z.Ticket,
                     OrderId = order.Id,
                     Order = order,
                     Quantity = z.Quantity
@@ -123,8 +129,8 @@ namespace IS_Domasna.Services.Implementation
                 for (int i = 1; i <= result.Count(); i++)
                 {
                     var currentItem = result[i - 1];
-                    totalPrice += currentItem.Quantity * currentItem.Product.ProductPrice;
-                    sb.AppendLine(i.ToString() + ". " + currentItem.Product.ProductName + " with quantity of: " + currentItem.Quantity + " and price of: $" + currentItem.Product.ProductPrice);
+                    totalPrice += currentItem.Quantity * currentItem.Ticket.Price;
+                    sb.AppendLine(i.ToString() + ". " + currentItem.Ticket.MovieTitle + " with quantity of: " + currentItem.Quantity + " and price of: $" + currentItem.Ticket.Price);
                 }
 
                 sb.AppendLine("Total price for your order: " + totalPrice.ToString());
@@ -136,10 +142,10 @@ namespace IS_Domasna.Services.Implementation
 
                 foreach (var item in productInOrders)
                 {
-                    this._productInOrderRepository.Insert(item);
+                    this._ticketInOrderRepository.Insert(item);
                 }
 
-                loggedInUser.UserCart.ProductInShoppingCarts.Clear();
+                loggedInUser.UserCart.TicketsInShoppingCarts.Clear();
 
                 this._userRepository.Update(loggedInUser);
                 this._mailRepository.Insert(mail);
@@ -147,7 +153,6 @@ namespace IS_Domasna.Services.Implementation
                 return true;
             }
 
-            return false;*/
             return false;
         }
     }
