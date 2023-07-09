@@ -11,5 +11,7 @@ namespace IS_Domasna.Domain.Identity
         public string Name { get; set; }
         public string Surname { get; set; }
         public ShoppingCart UserCart { get; set; }
+        public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

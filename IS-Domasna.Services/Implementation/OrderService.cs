@@ -20,6 +20,11 @@ namespace IS_Domasna.Services.Implementation
             return this._orderRepository.getAllOrders();
         }
 
+        public Order GetById(Guid id)
+        {
+            return _orderRepository.getOrder(id);
+        }
+
         public Order getOrderDetails(BaseEntity model)
         {
             return this._orderRepository.getOrderDetails(model);

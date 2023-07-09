@@ -3,6 +3,7 @@ using IS_Domasna.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace IS_Domasna.Repository.Implementation
@@ -25,6 +26,11 @@ namespace IS_Domasna.Repository.Implementation
                 .Include(z => z.TicketInOrders)
                 .Include("TicketInOrders.Ticket")
                 .ToListAsync().Result;
+        }
+
+        public Order getOrder(Guid id)
+        {
+            return entities.FirstOrDefault(z => z.Id == id);
         }
 
         public Order getOrderDetails(BaseEntity model)

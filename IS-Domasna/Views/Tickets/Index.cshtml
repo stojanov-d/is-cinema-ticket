@@ -9,10 +9,12 @@
 
 <p>
     <a asp-action="Create">Create New</a>
+    <a asp-controller="Tickets" asp-action="ExportAllTickets" class="btn btn-warning">Export tickets</a>
 </p>
 
+<div class="container d-flex justify-content-center">
 @foreach (var item in Model) {
-    <div class="card" style="width: 18rem;">
+    <div class="card m-4" style="width: 18rem;">
         <img src="@item.MovieImage" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">@item.MovieTitle</h5>
@@ -33,3 +35,4 @@
 	
 
 }
+</div>

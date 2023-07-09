@@ -15,6 +15,7 @@ namespace IS_Domasna.Repository
         public virtual DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public virtual DbSet<TicketsInShoppingCart> TicketsInShoppingCart { get; set; }
         public virtual DbSet<EmailMessage> EmailMessages { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -55,10 +55,10 @@ namespace IS_Domasna
             services.AddTransient<IOrderService, OrderService>();
 
 
-            services.AddScoped<EmailSettings>(es => emailSettings);
+           /* services.AddScoped<EmailSettings>(es => emailSettings);
             services.AddScoped<IEmailService, EmailService>(email => new EmailService(emailSettings));
             services.AddScoped<IBackgroundEmailSender, BackgroundEmailSender>();
-            services.AddHostedService<EmailScopedHostedService>();
+            services.AddHostedService<EmailScopedHostedService>();*/
 
 
             services.Configure<StripeSettings>(Configuration.GetSection("Stripe"));

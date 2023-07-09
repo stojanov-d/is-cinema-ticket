@@ -9,5 +9,7 @@ namespace IS_Domasna.Services.Interface
     {
         public List<Order> getAllOrders();
         public Order getOrderDetails(BaseEntity model);
+
+        public Order GetById(Guid id);
     }
 }

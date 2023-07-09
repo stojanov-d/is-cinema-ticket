@@ -11,6 +11,10 @@ using IS_Domasna.Services.Interface;
 using IS_Domasna.Domain.DTO;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
+using IS_Domasna.Services.Implementation;
+using System.IO;
+using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace IS_Domasna.Controllers
 {
@@ -47,7 +51,7 @@ namespace IS_Domasna.Controllers
 
             return View(ticket);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Tickets/Create
         public IActionResult Create()
         {
@@ -59,7 +63,8 @@ namespace IS_Domasna.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id")] Ticket ticket)
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create([Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id,Price")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +75,7 @@ namespace IS_Domasna.Controllers
             return View(ticket);
         }
 
+        [Authorize(Roles = "Admin")]
         // GET: Tickets/Edit/5
         public IActionResult Edit(Guid? id)
         {
@@ -91,6 +97,7 @@ namespace IS_Domasna.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(Guid id, [Bind("MovieTitle,MovieImage,MovieDescription,MovieAirTime,Id")] Ticket ticket)
         {
             if (id != ticket.Id)
@@ -121,6 +128,7 @@ namespace IS_Domasna.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -140,6 +148,7 @@ namespace IS_Domasna.Controllers
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(Guid? id)
         {
             ticketService.DeleteTicket(id.Value);
@@ -150,6 +159,7 @@ namespace IS_Domasna.Controllers
         {
             return ticketService.GetDetailsForTicket(id) != null;
         }
+        [Authorize(Roles = "Admin, Default")]
 
         public IActionResult AddTicketToCart(Guid id)
         {
@@ -160,6 +170,8 @@ namespace IS_Domasna.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Default")]
+
         public IActionResult AddTicketToCart(AddToShoppingCardDto model)
         {
 
@@ -175,6 +187,46 @@ namespace IS_Domasna.Controllers
                 return RedirectToAction("Index", "Tickets");
             }
             return View(model);
+        }
+        [Authorize(Roles = "Admin")]
+        public FileContentResult ExportAllTickets()
+        {
+            var tickets = ticketService.GetAllTickets();
+            string fileName = "Tickets.xlsx";
+            string contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            using (var workBook = new XLWorkbook())
+            {
+                IXLWorksheet worksheet = workBook.Worksheets.Add("All Tickets");
+
+                worksheet.Cell(1, 1).Value = "Ticket ID";
+                worksheet.Cell(1, 2).Value = "Movie Title";
+                worksheet.Cell(1, 3).Value = "Movie Description";
+                worksheet.Cell(1, 4).Value = "Price";
+
+                for (int i = 1; i <= tickets.Count(); i++)
+                {
+                    var item = tickets[i - 1];
+
+                    worksheet.Cell(i + 1, 1).Value = item.Id.ToString();
+                    worksheet.Cell(i + 1, 2).Value = item.MovieTitle;
+                    worksheet.Cell(i + 1, 3).Value = item.MovieDescription;
+                    worksheet.Cell(i + 1, 4).Value = item.Price.ToString();
+
+                   
+
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workBook.SaveAs(stream);
+
+                    var content = stream.ToArray();
+
+                    return File(content, contentType, fileName);
+                }
+            }
+
         }
     }
 }

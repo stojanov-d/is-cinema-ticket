@@ -10,5 +10,7 @@ namespace IS_Domasna.Repository.Interface
         public List<Order> getAllOrders();
         public Order getOrderDetails(BaseEntity model);
 
+        public Order getOrder(Guid id);
+
     }
 }
